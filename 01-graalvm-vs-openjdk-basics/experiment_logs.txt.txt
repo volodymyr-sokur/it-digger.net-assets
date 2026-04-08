@@ -1,0 +1,45 @@
+================================================================================
+EXPERIMENT 1: HELLO WORLD (Startup Benchmarking)
+================================================================================
+
+[1] Standard JVM Execution:
+--------------------------------------------------------------------------------
+$ time java HelloWorld
+GraalVM is alive on this EliteBook!
+
+Real: 0m0.092s | User: 0m0.041s | Sys: 0m0.052s 
+
+[2] GraalVM Native Image Build:
+--------------------------------------------------------------------------------
+$ native-image -J-Xmx6G HelloWorld
+Build Time: 3m 14s 
+Build Resources: 2 threads | Peak RSS: 0.95GB [cite: 19]
+Binary Size: 13.53MB [cite: 10]
+Note: Fallback to '-march=compatibility' due to lack of x86-64-v3 [cite: 4, 15]
+
+[3] Native Execution:
+--------------------------------------------------------------------------------
+$ time ./helloworld
+GraalVM is alive on this EliteBook!
+
+Real: 0m0.014s | User: 0m0.002s | Sys: 0m0.012s 
+
+================================================================================
+EXPERIMENT 2: PRIME BENCH (500,000 Iterations)
+================================================================================
+JVM Execution:    0.268s (Logic: 143ms)
+Native Execution: 0.186s (Logic: 172ms)
+Verdict: Native wins on total wall-clock time due to 0ms startup overhead.
+
+================================================================================
+EXPERIMENT 3: PRIME BENCH LARGE (5,000,000 Iterations)
+================================================================================
+JVM Execution:    3.455s (Logic: 3325ms)
+Native Execution: 4.188s (Logic: 4175ms)
+Verdict: JVM JIT Compiler overtakes Native on long-running throughput.
+
+================================================================================
+ARTIFACT ANALYSIS: DISK FOOTPRINT
+================================================================================
+- PrimeBenchLarge.class: 1.2 KB
+- primebenchlarge (ELF): 14.0 MB

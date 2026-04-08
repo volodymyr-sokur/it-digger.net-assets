@@ -1,0 +1,314 @@
+
+sdk use java 21-local
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time javac HelloWorld.java
+real	0m1.597s
+user	0m1.998s
+sys	0m0.264s
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time java HelloWorld
+GraalVM is alive on this EliteBook!
+
+real	0m0.092s
+user	0m0.041s
+sys	0m0.052s
+
+
+
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ sdk use java 21.0.2-graalce
+
+Using java version 21.0.2-graalce in this shell.
+
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time native-image -J-Xmx6G HelloWorld
+===================================================================================================
+GraalVM Native Image: Generating 'helloworld' (executable)...
+===================================================================================================
+Warning: The host machine does not support all features of 'x86-64-v3'. Falling back to '-march=compatibility' for best compatibility.
+[1/8] Initializing...                                                              (13.3s @ 0.06GB)
+ Java version: 21.0.2+13, vendor version: GraalVM CE 21.0.2+13.1
+ Graal compiler: optimization level: 2, target machine: compatibility
+ C compiler: gcc (linux, x86_64, 13.3.0)
+ Garbage collector: Serial GC (max heap size: 80% of RAM)
+ 1 user-specific feature(s):
+ - com.oracle.svm.thirdparty.gson.GsonFeature
+---------------------------------------------------------------------------------------------------
+Build resources:
+ - 5.33GB of memory (70.2% of 7.60GB system memory, set via '-Xmx6G')
+ - 2 thread(s) (100.0% of 2 available processor(s), determined at start)
+[2/8] Performing analysis...  [****]                                               (76.8s @ 0.27GB)
+    3,238 reachable types   (72.6% of    4,463 total)
+    3,840 reachable fields  (49.7% of    7,721 total)
+   15,690 reachable methods (45.4% of   34,556 total)
+    1,024 types,    90 fields, and   676 methods registered for reflection
+       57 types,    57 fields, and    52 methods registered for JNI access
+        4 native libraries: dl, pthread, rt, z
+[3/8] Building universe...                                                         (11.1s @ 0.38GB)
+[4/8] Parsing methods...      [***]                                                 (6.8s @ 0.39GB)
+[5/8] Inlining methods...     [***]                                                 (6.0s @ 0.36GB)
+[6/8] Compiling methods...    [[6/8] Compiling methods...    [********]                                           (67.9s @ 0.35GB)
+[7/8] Layouting methods...    [**]                                                  (3.9s @ 0.36GB)
+[8/8] Creating image...       [[8/8] Creating image...       [***]                                                 (7.6s @ 0.28GB)
+   5.39MB (39.80%) for code area:     8,918 compilation units
+   7.50MB (55.39%) for image heap:   97,380 objects and 49 resources
+ 666.80kB ( 4.81%) for other data
+  13.53MB in total
+---------------------------------------------------------------------------------------------------
+Top 10 origins of code area:                     Top 10 object types in image heap:
+   4.07MB java.base                                 1.61MB byte[] for code metadata
+ 939.83kB svm.jar (Native Image)                    1.29MB byte[] for java.lang.String
+ 113.10kB java.logging                            977.50kB java.lang.String
+  64.82kB org.graalvm.nativeimage.base            752.25kB java.lang.Class
+  47.59kB jdk.proxy1                              278.65kB byte[] for general heap data
+  45.84kB jdk.proxy3                              278.27kB c.o.svm.core.hub.DynamicHubCompanion
+  26.76kB jdk.internal.vm.ci                      244.36kB java.util.HashMap$Node
+  22.06kB org.graalvm.collections                 217.99kB java.lang.Object[]
+  11.42kB jdk.proxy2                              185.98kB java.lang.String[]
+   8.06kB jdk.internal.vm.compiler                155.98kB byte[] for reflection metadata
+   3.05kB for 2 more packages                       1.57MB for 905 more object types
+Warning: The host machine does not support all features of 'x86-64-v3'. Falling back to '-march=compatibility' for best compatibility.
+---------------------------------------------------------------------------------------------------
+Recommendations:
+ INIT: Adopt '--strict-image-heap' to prepare for the next GraalVM release.
+ HEAP: Set max heap for improved and more predictable memory usage.
+ CPU:  Enable more CPU features with '-march=native' for improved performance.
+---------------------------------------------------------------------------------------------------
+             16.5s (8.3% of total time) in 193 GCs | Peak RSS: 0.95GB | CPU load: 1.96
+---------------------------------------------------------------------------------------------------
+Produced artifacts:
+ /home/volodymyr/Documents/blog/article_1/helloworld (executable)
+===================================================================================================
+Finished generating 'helloworld' in 3m 14s.
+
+real	3m18.976s
+user	6m19.811s
+sys	0m9.833s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time ./helloworld
+GraalVM is alive on this EliteBook!
+
+real	0m0.014s
+user	0m0.002s
+sys	0m0.012s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time javac PrimeBench.java 
+
+real	0m1.370s
+user	0m2.178s
+sys	0m0.195s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time java PrimeBench 
+Found 41538 primes in 143ms
+
+real	0m0.268s
+user	0m0.239s
+sys	0m0.057s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time native-image -J-Xmx6G PrimeBench
+========================================================================================================================
+GraalVM Native Image: Generating 'primebench' (executable)...
+========================================================================================================================
+Warning: The host machine does not support all features of 'x86-64-v3'. Falling back to '-march=compatibility' for best compatibility.
+[1/8] Initializing...                                                                                   (12.5s @ 0.06GB)
+ Java version: 21.0.2+13, vendor version: GraalVM CE 21.0.2+13.1
+ Graal compiler: optimization level: 2, target machine: compatibility
+ C compiler: gcc (linux, x86_64, 13.3.0)
+ Garbage collector: Serial GC (max heap size: 80% of RAM)
+ 1 user-specific feature(s):
+ - com.oracle.svm.thirdparty.gson.GsonFeature
+------------------------------------------------------------------------------------------------------------------------
+Build resources:
+ - 5.33GB of memory (70.2% of 7.60GB system memory, set via '-Xmx6G')
+ - 2 thread(s) (100.0% of 2 available processor(s), determined at start)
+[2/8] Performing analysis...  [****]                                                                    (75.9s @ 0.25GB)
+    3,238 reachable types   (72.5% of    4,467 total)
+    3,840 reachable fields  (49.7% of    7,721 total)
+   15,696 reachable methods (45.4% of   34,565 total)
+    1,024 types,    90 fields, and   676 methods registered for reflection
+       57 types,    57 fields, and    52 methods registered for JNI access
+        4 native libraries: dl, pthread, rt, z
+[3/8] Building universe...                                                                              (10.9s @ 0.32GB)
+[4/8] Parsing methods...      [[4/8] Parsing methods...      [***]                                                                      (6.7s @ 0.31GB)
+[5/8] Inlining methods...     [***]                                                                      (5.8s @ 0.41GB)
+[6/8] Compiling methods...    [********]                                                                (67.0s @ 0.35GB)
+[7/8] Layouting methods...    [[7/8] Layouting methods...    [**]                                                                       (4.0s @ 0.34GB)
+[8/8] Creating image...       [***]                                                                      (6.0s @ 0.47GB)
+   5.39MB (39.81%) for code area:     8,919 compilation units
+   7.50MB (55.39%) for image heap:   97,388 objects and 49 resources
+ 665.65kB ( 4.80%) for other data
+  13.53MB in total
+------------------------------------------------------------------------------------------------------------------------
+Top 10 origins of code area:                                Top 10 object types in image heap:
+   4.07MB java.base                                            1.61MB byte[] for code metadata
+ 939.83kB svm.jar (Native Image)                               1.29MB byte[] for java.lang.String
+ 113.10kB java.logging                                       977.59kB java.lang.String
+  64.82kB org.graalvm.nativeimage.base                       752.25kB java.lang.Class
+  47.59kB jdk.proxy1                                         278.65kB byte[] for general heap data
+  45.84kB jdk.proxy3                                         278.27kB com.oracle.svm.core.hub.DynamicHubCompanion
+  26.76kB jdk.internal.vm.ci                                 244.36kB java.util.HashMap$Node
+  22.06kB org.graalvm.collections                            217.99kB java.lang.Object[]
+  11.42kB jdk.proxy2                                         185.98kB java.lang.String[]
+   8.06kB jdk.internal.vm.compiler                           155.98kB byte[] for reflection metadata
+   4.21kB for 3 more packages                                  1.57MB for 905 more object types
+Warning: The host machine does not support all features of 'x86-64-v3'. Falling back to '-march=compatibility' for best compatibility.
+------------------------------------------------------------------------------------------------------------------------
+Recommendations:
+ INIT: Adopt '--strict-image-heap' to prepare for the next GraalVM release.
+ HEAP: Set max heap for improved and more predictable memory usage.
+ CPU:  Enable more CPU features with '-march=native' for improved performance.
+------------------------------------------------------------------------------------------------------------------------
+                       14.8s (7.7% of total time) in 176 GCs | Peak RSS: 0.95GB | CPU load: 1.97
+------------------------------------------------------------------------------------------------------------------------
+Produced artifacts:
+ /home/volodymyr/Documents/blog/article_1/primebench (executable)
+========================================================================================================================
+Finished generating 'primebench' in 3m 10s.
+
+real	3m13.256s
+user	6m12.217s
+sys	0m8.995s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time ./primebench 
+Found 41538 primes in 172ms
+
+real	0m0.186s
+user	0m0.172s
+sys	0m0.013s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time javac PrimeBenchLarge.java 
+
+real	0m1.403s
+user	0m2.163s
+sys	0m0.227s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time java PrimeBenchLarge 
+Found 348513 primes in 3325ms
+
+real	0m3.455s
+user	0m3.423s
+sys	0m0.059s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time native-image -J-Xmx6G PrimeBenchLarge
+========================================================================================================================
+GraalVM Native Image: Generating 'primebenchlarge' (executable)...
+========================================================================================================================
+Warning: The host machine does not support all features of 'x86-64-v3'. Falling back to '-march=compatibility' for best compatibility.
+[1/8] Initializing...                                                                                   (12.9s @ 0.06GB)
+ Java version: 21.0.2+13, vendor version: GraalVM CE 21.0.2+13.1
+ Graal compiler: optimization level: 2, target machine: compatibility
+ C compiler: gcc (linux, x86_64, 13.3.0)
+ Garbage collector: Serial GC (max heap size: 80% of RAM)
+ 1 user-specific feature(s):
+ - com.oracle.svm.thirdparty.gson.GsonFeature
+------------------------------------------------------------------------------------------------------------------------
+Build resources:
+ - 5.33GB of memory (70.2% of 7.60GB system memory, set via '-Xmx6G')
+ - 2 thread(s) (100.0% of 2 available processor(s), determined at start)
+[2/8] Performing analysis...  [****]                                                                    (75.2s @ 0.27GB)
+    3,238 reachable types   (72.5% of    4,467 total)
+    3,840 reachable fields  (49.7% of    7,721 total)
+   15,696 reachable methods (45.4% of   34,565 total)
+    1,024 types,    90 fields, and   676 methods registered for reflection
+       57 types,    57 fields, and    52 methods registered for JNI access
+        4 native libraries: dl, pthread, rt, z
+[3/8] Building universe...                                                                              (11.4s @ 0.37GB)
+[4/8] Parsing methods...      [***]                                                                      (6.6s @ 0.38GB)
+[5/8] Inlining methods...     [***]                                                                      (5.8s @ 0.35GB)
+[6/8] Compiling methods...    [********]                                                                (67.3s @ 0.41GB)
+[7/8] Layouting methods...    [**]                                                                       (3.9s @ 0.38GB)
+[8/8] Creating image...       [[8/8] Creating image...       [***]                                                                      (6.0s @ 0.39GB)
+   5.39MB (39.81%) for code area:     8,919 compilation units
+   7.50MB (55.39%) for image heap:   97,387 objects and 49 resources
+ 665.66kB ( 4.80%) for other data
+  13.53MB in total
+------------------------------------------------------------------------------------------------------------------------
+Top 10 origins of code area:                                Top 10 object types in image heap:
+   4.07MB java.base                                            1.61MB byte[] for code metadata
+ 939.84kB svm.jar (Native Image)                               1.29MB byte[] for java.lang.String
+ 113.10kB java.logging                                       977.59kB java.lang.String
+  64.82kB org.graalvm.nativeimage.base                       752.25kB java.lang.Class
+  47.59kB jdk.proxy1                                         278.65kB byte[] for general heap data
+  45.84kB jdk.proxy3                                         278.27kB com.oracle.svm.core.hub.DynamicHubCompanion
+  26.76kB jdk.internal.vm.ci                                 244.36kB java.util.HashMap$Node
+  22.06kB org.graalvm.collections                            217.99kB java.lang.Object[]
+  11.42kB jdk.proxy2                                         185.98kB java.lang.String[]
+   8.06kB jdk.internal.vm.compiler                           155.98kB byte[] for reflection metadata
+   4.21kB for 3 more packages                                  1.57MB for 905 more object types
+Warning: The host machine does not support all features of 'x86-64-v3'. Falling back to '-march=compatibility' for best compatibility.
+------------------------------------------------------------------------------------------------------------------------
+Recommendations:
+ INIT: Adopt '--strict-image-heap' to prepare for the next GraalVM release.
+ HEAP: Set max heap for improved and more predictable memory usage.
+ CPU:  Enable more CPU features with '-march=native' for improved performance.
+------------------------------------------------------------------------------------------------------------------------
+                       15.6s (8.1% of total time) in 186 GCs | Peak RSS: 0.93GB | CPU load: 1.97
+------------------------------------------------------------------------------------------------------------------------
+Produced artifacts:
+ /home/volodymyr/Documents/blog/article_1/primebenchlarge (executable)
+========================================================================================================================
+Finished generating 'primebenchlarge' in 3m 10s.
+
+real	3m13.487s
+user	6m11.474s
+sys	0m9.204s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ time ./primebenchlarge 
+Found 348513 primes in 4175ms
+
+real	0m4.188s
+user	0m4.176s
+sys	0m0.010s
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ ls -lh PrimeBenchLarge.class primebenchlarge
+-rwxrwxr-x 1 volodymyr volodymyr  14M Apr  6 20:06 primebenchlarge
+-rw-rw-r-- 1 volodymyr volodymyr 1.2K Apr  6 19:31 PrimeBenchLarge.class
+volodymyr@volodymyr-HP:~/Documents/blog/article_1$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
