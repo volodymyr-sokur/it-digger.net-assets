@@ -22,12 +22,6 @@ The code in this repository focuses on:
 2. **Reproducibility:** Every folder contains a `commands.sh` or `Makefile` so you can verify the numbers yourself.
 3. **Pragmatism:** Choosing the right tool (JIT vs. AOT, Microservice vs. Monolith) based on data, not hype.
 
-## 🤝 How to Use This Repo
-If you are reading one of my articles and want to run the tests on your own machine:
-1. Navigate to the specific article directory.
-2. Read the local `README.md` for environmental requirements.
-3. Execute the provided scripts to generate raw logs.
-
 ---
 **Author:** Volodymyr Sokur
 **Blog:** it-digger.net
